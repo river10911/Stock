@@ -19,12 +19,15 @@ def load_data(ticker):
     stock = yf.Ticker(ticker)
     hist = stock.history(period="5y")
     news = stock.news
-    return stock, hist, news
+    # 修正1：拿掉 stock 物件，只回傳可以快取的數據資料
+    return hist, news
 
 if ticker_symbol:
     st.write(f"正在分析: **{ticker_symbol}**")
     try:
-        stock, hist, news = load_data(ticker_symbol)
+        # 修正2：這裡也對應拿掉 stock
+        hist, news = load_data(ticker_symbol)
+        
         if hist.empty:
             st.error("找不到該股票的數據，請確認代號是否正確。")
         else:
